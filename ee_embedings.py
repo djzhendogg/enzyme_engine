@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 import joblib
-from tqdm import tqdm
 from transformers import TFAutoModel, AutoTokenizer
 from Bio.Align import substitution_matrices
 from sklearn.decomposition import PCA
@@ -13,7 +12,7 @@ model_PB = TFAutoModel.from_pretrained(model_PB_name, from_pt=True)
 blosum62 = substitution_matrices.load('BLOSUM62')
 amino_acids = 'ACDEFGHIKLMNPQRSTVWYU'
 
-def prot_bert_encode_batch(sequences, device="GPU", batch_size=16):
+def prot_bert_encode_batch(sequences, device="GPU", batch_size=32):
     sequences = [" ".join(list(seq)) for seq in sequences]
 
     inputs = tokenizer_PB(sequences, return_tensors="tf", padding=True, truncation=True)
@@ -22,8 +21,9 @@ def prot_bert_encode_batch(sequences, device="GPU", batch_size=16):
     attention_mask = inputs["attention_mask"]
 
     embeddings = []
+    print("start encoding")
     with tf.device(f"/{device}:0"):
-        for i in tqdm(range(0, len(sequences), batch_size), desc="Encoding batches"):
+        for i in range(0, len(sequences), batch_size):
             batch_input_ids = input_ids[i:i + batch_size]
             batch_attention_mask = attention_mask[i:i + batch_size]
 
@@ -32,6 +32,7 @@ def prot_bert_encode_batch(sequences, device="GPU", batch_size=16):
 
             batch_embeddings = tf.reduce_mean(hidden_states[:, 1:-1, :], axis=1).numpy()
             embeddings.append(batch_embeddings)
+            print(f"{i + batch_size} left")
     embeddings = np.vstack(embeddings)
     return embeddings
 
