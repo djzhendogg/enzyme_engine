@@ -48,13 +48,13 @@ big_df.drop(['uniprot_sequence'], axis=1, inplace=True)
 big_df.dropna(subset="ncbi_sequence", inplace=True)
 
 big_sequences = big_df['ncbi_sequence'].to_list()
-big_sequences_1 = big_sequences[:len(big_sequences)//2]
+# big_sequences_1 = big_sequences[:len(big_sequences)//2]
 big_sequences_2 = big_sequences[len(big_sequences)//2:]
-big_sequences_array = prot_t5_encode_batch(big_sequences_1)
-df = pd.DataFrame(big_sequences_array)
-df.to_pickle("big_prott5_embeddings_1.pkl")
-del df
-del big_sequences_array
+# big_sequences_array = prot_t5_encode_batch(big_sequences_1)
+# df = pd.DataFrame(big_sequences_array)
+# df.to_pickle("big_prott5_embeddings_1.pkl")
+# del df
+# del big_sequences_array
 
 big_sequences_array = prot_t5_encode_batch(big_sequences_2)
 df = pd.DataFrame(big_sequences_array)
