@@ -37,7 +37,7 @@ def prot_t5_encode_batch(sequences, batch_size=16):
             # Усредняем по длине последовательности для каждого белка
             emb_batch = last_hidden.mean(dim=1)  # shape (batch_size, hidden_dim)
 
-            embeddings.append(emb_batch)
+            embeddings.append(emb_batch.cpu().numpy())
 
         embeddings = np.vstack(embeddings)
 
