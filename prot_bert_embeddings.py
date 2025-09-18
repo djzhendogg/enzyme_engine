@@ -40,7 +40,7 @@ big_df = pd.read_csv("full_dataset.csv")
 # pdb_id,chain_id,mutation,sequence,ddg,is_mutant
 
 big_sequences = big_df['sequence'].to_list()
-print(big_sequences.iloc[0])
+print(big_df.iloc[0])
 big_sequences_array = prot_bert_encode_batch(big_sequences)
 df = pd.DataFrame(big_sequences_array)
 print(df.iloc[0])
