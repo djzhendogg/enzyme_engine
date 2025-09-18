@@ -36,16 +36,20 @@ def prot_bert_encode_batch(sequences, device="GPU", batch_size=32):
     embeddings = np.vstack(embeddings)
     return embeddings
 
-big_df = pd.read_csv("R02112_with_sequences.csv")
-big_df.drop(['uniprot_sequence'], axis=1, inplace=True)
-big_df.dropna(subset="ncbi_sequence", inplace=True)
+big_df = pd.read_csv("full_dataset.csv")
+# pdb_id,chain_id,mutation,sequence,ddg,is_mutant
 
-big_sequences = big_df['ncbi_sequence'].to_list()
+big_sequences = big_df['sequence'].to_list()
+print(big_sequences.iloc[0])
 big_sequences_array = prot_bert_encode_batch(big_sequences)
 df = pd.DataFrame(big_sequences_array)
-df.to_csv("big_prot_bert_embeddings.csv")
-pca = PCA(n_components=2)
-components = pca.fit_transform(df)
-components = pd.DataFrame(components, columns=['Principle Component 0', 'Principle Component 1'])
-components.to_csv("big_prot_bert_embeddings_PCA.csv")
-joblib.dump(pca, 'pca_big_prot_bert_embeddings_model.pkl')
+print(df.iloc[0])
+df = pd.concat([big_df, df], axis=1)
+print(df.iloc[0])
+df.to_csv("full_df_nam.csv")
+
+# pca = PCA(n_components=2)
+# components = pca.fit_transform(df)
+# components = pd.DataFrame(components, columns=['Principle Component 0', 'Principle Component 1'])
+# components.to_csv("big_prot_bert_embeddings_PCA.csv")
+# joblib.dump(pca, 'pca_big_prot_bert_embeddings_model.pkl')
