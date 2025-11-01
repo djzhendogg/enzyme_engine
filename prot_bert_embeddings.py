@@ -36,18 +36,13 @@ def prot_bert_encode_batch(sequences, device="GPU", batch_size=32):
     embeddings = np.vstack(embeddings)
     return embeddings
 
-big_df = pd.read_csv("full_dataset.csv")
-# pdb_id,chain_id,mutation,sequence,ddg,is_mutant
-
+big_df = pd.read_csv("data/protein_len_1024.csv")
 big_sequences = big_df['sequence'].to_list()
-print(big_df.iloc[0])
 big_sequences_array = prot_bert_encode_batch(big_sequences)
-df = pd.DataFrame(big_sequences_array)
-print(df.iloc[0])
-df = pd.concat([big_df, df], axis=1)
-print(df.iloc[0])
-df.to_csv("full_df_nam.csv")
-
+seq_df = pd.DataFrame(big_sequences_array)
+res = pd.concat([big_df, seq_df], axis=1)
+res.to_pickle("data_embed/" + "protein_protbert_len_1024" + ".pkl")
+print(f"DONE")
 # pca = PCA(n_components=2)
 # components = pca.fit_transform(df)
 # components = pd.DataFrame(components, columns=['Principle Component 0', 'Principle Component 1'])

@@ -38,16 +38,11 @@ def esmc_encode_batch(sequences, batch_size=16):
     embeddings = np.vstack(embeddings)
     return embeddings
 
-big_df = pd.read_csv("R02112_with_sequences.csv")
-big_df.drop(['uniprot_sequence'], axis=1, inplace=True)
-big_df.dropna(subset="ncbi_sequence", inplace=True)
-
-big_sequences = big_df['ncbi_sequence'].to_list()
+big_df = pd.read_csv("data/protein_len_1024.csv")
+big_sequences = big_df['sequence'].to_list()
 big_sequences_array = esmc_encode_batch(big_sequences)
-df = pd.DataFrame(big_sequences_array)
-df.to_pickle("big_esmc_embeddings.pkl")
-pca = PCA(n_components=2)
-components = pca.fit_transform(df)
-components = pd.DataFrame(components, columns=['Principle Component 0', 'Principle Component 1'])
-components.to_pickle("big_esmc_embeddings_PCA.pkl")
-joblib.dump(pca, 'pca_big_esmc_embeddings_model.pkl')
+seq_df = pd.DataFrame(big_sequences_array)
+
+res = pd.concat([big_df, seq_df], axis=1)
+res.to_pickle("data_embed/" + "protein_esmc_len_1024" + ".pkl")
+print(f"DONE")

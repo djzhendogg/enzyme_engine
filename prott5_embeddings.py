@@ -43,31 +43,11 @@ def prot_t5_encode_batch(sequences, batch_size=16):
 
     return embeddings
 
-big_df = pd.read_csv("R02112_with_sequences.csv")
-big_df.drop(['uniprot_sequence'], axis=1, inplace=True)
-big_df.dropna(subset="ncbi_sequence", inplace=True)
+big_df = pd.read_csv("data/protein_len_512.csv")
+sequences = big_df['sequence'].to_list()
 
-big_sequences = big_df['ncbi_sequence'].to_list()
-# big_sequences_1 = big_sequences[:len(big_sequences)//2]
-big_sequences_2 = big_sequences[len(big_sequences)//2:]
-# big_sequences_array = prot_t5_encode_batch(big_sequences_1)
-# df = pd.DataFrame(big_sequences_array)
-# df.to_pickle("big_prott5_embeddings_1.pkl")
-# del df
-# del big_sequences_array
-
-big_sequences_array = prot_t5_encode_batch(big_sequences_2)
-df = pd.DataFrame(big_sequences_array)
-df.to_pickle("big_prott5_embeddings_2.pkl")
-
-del df
-del big_sequences_array
-
-df_1 = pd.read_pickle("big_prott5_embeddings_1.pkl")
-df_2= pd.read_pickle("big_prott5_embeddings_2.pkl")
-df = pd.concat([df_1, df_2])
-pca = PCA(n_components=2)
-components = pca.fit_transform(df)
-components = pd.DataFrame(components, columns=['Principle Component 0', 'Principle Component 1'])
-components.to_pickle("big_prott5_embeddings_PCA.pkl")
-joblib.dump(pca, 'pca_big_prott5_embeddings_model.pkl')
+sequences_array = prot_t5_encode_batch(sequences)
+seq_df = pd.DataFrame(sequences_array)
+res = pd.concat([big_df, seq_df], axis=1)
+res.to_pickle("data_embed/" + "protein_prott5_len_512" + ".pkl")
+print(f"DONE")
