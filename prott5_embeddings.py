@@ -43,11 +43,11 @@ def prot_t5_encode_batch(sequences, batch_size=16):
 
     return embeddings
 
-big_df = pd.read_csv("data/protein_len_512.csv")
+big_df = pd.read_csv("data/new_termostab_512.csv")
 sequences = big_df['sequence'].to_list()
 
 sequences_array = prot_t5_encode_batch(sequences)
 seq_df = pd.DataFrame(sequences_array)
 res = pd.concat([big_df, seq_df], axis=1)
-res.to_pickle("data_embed/" + "protein_prott5_len_512" + ".pkl")
+res.to_pickle("data_embed/" + "new_termostab_512_prott5" + ".pkl")
 print(f"DONE")
