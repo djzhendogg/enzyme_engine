@@ -44,7 +44,7 @@ def prot_t5_encode_batch(sequences, batch_size=16):
     return embeddings
 
 big_df = pd.read_csv("data/new_termostab_512.csv")
-sequences = big_df['sequence'].to_list()
+sequences = big_df['final_sequence'].to_list()
 
 sequences_array = prot_t5_encode_batch(sequences)
 seq_df = pd.DataFrame(sequences_array)

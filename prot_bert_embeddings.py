@@ -37,7 +37,7 @@ def prot_bert_encode_batch(sequences, device="GPU", batch_size=32):
     return embeddings
 
 big_df = pd.read_csv("data/new_termostab_1024.csv")
-big_sequences = big_df['sequence'].to_list()
+big_sequences = big_df['final_sequence'].to_list()
 big_sequences_array = prot_bert_encode_batch(big_sequences)
 seq_df = pd.DataFrame(big_sequences_array)
 res = pd.concat([big_df, seq_df], axis=1)
