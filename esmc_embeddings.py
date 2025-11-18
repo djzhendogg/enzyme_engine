@@ -38,11 +38,11 @@ def esmc_encode_batch(sequences, batch_size=16):
     embeddings = np.vstack(embeddings)
     return embeddings
 
-big_df = pd.read_csv("data/new_termostab_1024.csv")
+big_df = pd.read_csv("data/temp_stab_hand_scrap_row_seq.csv")
 big_sequences = big_df['final_sequence'].to_list()
 big_sequences_array = esmc_encode_batch(big_sequences)
 seq_df = pd.DataFrame(big_sequences_array)
 
 res = pd.concat([big_df, seq_df], axis=1)
-res.to_pickle("data_embed/" + "new_termostab_1024_esmc" + ".pkl")
+res.to_pickle("data_embed/" + "temp_stab_hand_scrap_row_seq_esmc" + ".pkl")
 print(f"DONE")
