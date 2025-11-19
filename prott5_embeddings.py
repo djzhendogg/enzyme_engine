@@ -43,11 +43,11 @@ def prot_t5_encode_batch(sequences, batch_size=16):
 
     return embeddings
 
-big_df = pd.read_csv("data/temp_stab_hand_scrap_row_seq.csv")
+big_df = pd.read_csv("data/benchmark_B_licheniformis.csv")
 sequences = big_df['final_sequence'].to_list()
 
 sequences_array = prot_t5_encode_batch(sequences)
 seq_df = pd.DataFrame(sequences_array)
 res = pd.concat([big_df, seq_df], axis=1)
-res.to_pickle("data_embed/" + "temp_stab_hand_scrap_row_seq_prott5" + ".pkl")
+res.to_pickle("data_embed/" + "benchmark_B_licheniformis_prott5" + ".pkl")
 print(f"DONE")
