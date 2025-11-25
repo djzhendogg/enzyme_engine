@@ -38,11 +38,11 @@ def esmc_encode_batch(sequences, batch_size=16):
     embeddings = np.vstack(embeddings)
     return embeddings
 
-big_df = pd.read_csv("data/seq_samples_from_articles.csv")
+big_df = pd.read_csv("data/benchmark_B_licheniformis_mutated_temp_bench.csv")
 big_sequences = big_df['final_sequence'].to_list()
 big_sequences_array = esmc_encode_batch(big_sequences)
 seq_df = pd.DataFrame(big_sequences_array)
 
 res = pd.concat([big_df, seq_df], axis=1)
-res.to_pickle("data_embed/" + "seq_samples_from_articles_esmc" + ".pkl")
+res.to_pickle("data_embed/" + "benchmark_B_licheniformis_mutated_temp_bench_esmc" + ".pkl")
 print(f"DONE")
