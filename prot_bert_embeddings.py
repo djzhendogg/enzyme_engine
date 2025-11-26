@@ -36,12 +36,12 @@ def prot_bert_encode_batch(sequences, device="GPU", batch_size=32):
     embeddings = np.vstack(embeddings)
     return embeddings
 
-big_df = pd.read_csv("data/benchmark_B_licheniformis_mutated_temp_bench.csv")
+big_df = pd.read_csv("data/llm_mutations.csv")
 big_sequences = big_df['final_sequence'].to_list()
 big_sequences_array = prot_bert_encode_batch(big_sequences)
 seq_df = pd.DataFrame(big_sequences_array)
 res = pd.concat([big_df, seq_df], axis=1)
-res.to_pickle("data_embed/" + "benchmark_B_licheniformis_mutated_temp_bench_protbert" + ".pkl")
+res.to_pickle("data_embed/" + "llm_mutations_protbert" + ".pkl")
 print(f"DONE")
 # pca = PCA(n_components=2)
 # components = pca.fit_transform(df)
